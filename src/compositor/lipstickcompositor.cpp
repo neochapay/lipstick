@@ -188,6 +188,13 @@ void LipstickCompositor::onExtendedSurfaceReady(QtWayland::ExtendedSurface *extS
     LipstickCompositorWindow *window = surfaceWindow(surface);
     if(window)
         window->setExtendedSurface(extSurface);
+
+    connect(extSurface, &QtWayland::ExtendedSurface::raiseRequested, this, [this, window]() {
+        windowRaised(window);
+    });
+    connect(extSurface, &QtWayland::ExtendedSurface::lowerRequested, this, [this, window]() {
+        windowLowered(window);
+    });
 }
 
 bool LipstickCompositor::openUrl(QWaylandClient *client, const QUrl &url)
